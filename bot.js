@@ -1,4 +1,4 @@
-const dotenv = require('dotenv')
+const dotenv = require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Telegraf } = require('telegraf')
