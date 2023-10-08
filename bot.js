@@ -1,16 +1,16 @@
+const dotenv = require('dotenv')
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Telegraf } = require('telegraf')
 
-const TOKEN = '6458616705:AAF03IpVznnXXUw9XEfYR18BTL6hd4k9PPg'
-const bot = new Telegraf(TOKEN)
-const port = 3000;
 
-const SERVER_URL = "130.162.217.88"
+const bot = new Telegraf(process.env.TOKEN)
+
+
 
 async function getServerData() {
     try {
-        const response = await fetch("https://api.mcstatus.io/v2/status/java/" + SERVER_URL);
+        const response = await fetch("https://api.mcstatus.io/v2/status/java/" + process.env.SERVER_URL);
         
         if (response.ok) {
             const data = await response.json();
@@ -27,13 +27,13 @@ const app = express();
 
 app.use(express.json());
 
-app.post(`/bot${TOKEN}`, (req, res) => {
+app.post(`/bot${process.env.TOKEN}`, (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
 });
 
-app.listen(port, () => {
-  console.log(`Express server is listening on ${port}`);
+app.listen(process.env.PORT, () => {
+  console.log(`Express server is listening on ${process.env.PORT}`);
 });
 
 bot.command('players', async ( msg ) => {
