@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const TelegramBot = require('node-telegram-bot-api');
+const { Telegraf } = require('telegraf')
 
 const TOKEN = '6458616705:AAF03IpVznnXXUw9XEfYR18BTL6hd4k9PPg'
-const bot = new TelegramBot(TOKEN, { polling: true });
+const bot = new Telegraf(TOKEN)
 const port = 3000;
 
 const SERVER_URL = "130.162.217.88"
@@ -36,20 +36,28 @@ app.listen(port, () => {
   console.log(`Express server is listening on ${port}`);
 });
 
-bot.onText(/\/players/, async (msg) => {
+bot.command('players', async ( msg ) => {
     try {
+        console.log('f')
         let serverData = await getServerData();
-        let playersList = serverData.players.list
-        console.log(playersList)
-        let playersName = playersList.map(player => player.name_clean)
+        let playersList = serverData.players.list;
 
-        let players = playersName.join('\n')
-        let botResponse = '<u>Гравці онлайн:</u>\n\n' + players
+        var botResponse = '';
 
-        bot.sendMessage(msg.chat.id, botResponse, {parse_mode: 'HTML'});
+        if (playersList.length > 0) {
+            let playersName = playersList.map(player => player.name_clean)
+        
+            let players = playersName.join('\n')
+            botResponse = '<u>Гравці онлайн:</u>\n\n' + players
+        } else {
+            botResponse = '<u>Гравці відсутні</u>'
+        }
+        
+
+        msg.reply(botResponse, {parse_mode: "HTML"});
     } catch (error) {
         console.error(error);
     }
 });
 
-bot.on("polling_error", console.log);
+bot.launch()
