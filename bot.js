@@ -6,9 +6,9 @@ const { Telegraf } = require('telegraf');
 const rateLimit = require('telegraf-ratelimit');
 
 const limitConfig = {
-    window: 6 * 10000,
+    window: 15 * 1000,
     limit: 1,
-    onLimitExceeded: (ctx, next) => ctx.reply('Досягнут ліміт запросів, зачекайте хвилину')
+    onLimitExceeded: (ctx, next) => ctx.reply('Досягнут ліміт запросів, зачекайте 15 секунд')
 }
 
 const bot = new Telegraf(process.env.TOKEN)
