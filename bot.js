@@ -1,9 +1,18 @@
 require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
-const { Telegraf } = require('telegraf')
+const { Telegraf } = require('telegraf');
+const rateLimit = require('telegraf-ratelimit')
+
+const limitConfig = {
+    window: 6 * 10000,
+    limit: 1,
+    onLimitExceeded: (ctx, next) => ctx.reply('Досягнут ліміт запросів, зачекайте хвилину')
+}
 
 const bot = new Telegraf(process.env.TOKEN)
+bot.use(rateLimit(limitConfig))
+
 
 async function getServerData() {
     try {
