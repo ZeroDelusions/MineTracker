@@ -8,7 +8,7 @@ const limitConfig = {
     window: 15 * 1000,
     limit: 1,
     onLimitExceeded: (ctx) => {
-        if (ctx.message.text == '/players') {
+        if (ctx.message.text == '/players' || ctx.message.text == '/players@MineTracker_bot') {
             ctx.reply('Досягнут ліміт запросів, зачекайте 15 секунд')
         }
     } 
