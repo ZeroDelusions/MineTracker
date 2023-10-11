@@ -1,12 +1,9 @@
-const dotenv = require('dotenv').config()
+require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Telegraf } = require('telegraf')
 
-
 const bot = new Telegraf(process.env.TOKEN)
-
-
 
 async function getServerData() {
     try {
@@ -38,21 +35,28 @@ app.listen(process.env.PORT, () => {
 
 bot.command('players', async ( msg ) => {
     try {
-        console.log('f')
         let serverData = await getServerData();
         let playersList = serverData.players.list;
 
         var botResponse = '';
 
         if (playersList.length > 0) {
-            let playersName = playersList.map(player => player.name_clean)
+            let playersName = playersList.map(player => {
+                if(typeof process.env.PLAYERS_ICONS !== 'undefined' && process.env.PLAYERS_ICONS.length > 0) {
+                    playersIcons = JSON.parse(process.env.PLAYERS_ICONS)
+                    for(const key in playersIcons) {
+                        if(player.name_clean == key) {
+                            return `${playersIcons[key]} ` + player.name_clean
+                        }
+                    }
+                }
+                return player.name_clean
+            }).join('\n');
         
-            let players = playersName.join('\n')
-            botResponse = '<u>Гравці онлайн:</u>\n\n' + players
+            botResponse = '<u>Гравці онлайн:</u>\n\n' + playersName
         } else {
             botResponse = '<u>Гравці відсутні</u>'
         }
-        
 
         msg.reply(botResponse, {parse_mode: "HTML"});
     } catch (error) {
