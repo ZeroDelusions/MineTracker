@@ -49,14 +49,14 @@ bot.command('players', async ( msg ) => {
         let playersList = serverData.players.list;
 
         var botResponse = '';
-
+        
         if (playersList.length > 0) {
             let playersName = playersList.map(player => {
                 if(typeof process.env.PLAYERS_ICONS !== 'undefined' && process.env.PLAYERS_ICONS.length > 0) {
                     playersIcons = JSON.parse(process.env.PLAYERS_ICONS)
                     for(const key in playersIcons) {
                         if(player.name_clean == key) {
-                            return `${playersIcons[key]} ` + player.name_clean
+                            return `• ${playersIcons[key]} ` + player.name_clean
                         }
                     }
                 }
@@ -65,7 +65,7 @@ bot.command('players', async ( msg ) => {
 
             let playerCount = playersList.length
         
-            botResponse = '<u>Гравці онлайн</u> (' + playerCount + '/15)\n\n' + playersName
+            botResponse = '<u>Гравці онлайн</u> (' + playerCount + '/15)\n\n' + playersName 
         } else {
             botResponse = '<u>Гравці відсутні</u>'
         }
