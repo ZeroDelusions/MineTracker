@@ -62,8 +62,10 @@ bot.command('players', async ( msg ) => {
                 }
                 return player.name_clean
             }).join('\n');
+
+            let playerCount = playersList.length
         
-            botResponse = '<u>Гравці онлайн:</u>\n\n' + playersName
+            botResponse = '<u>Гравці онлайн</u> (' + playerCount + '/15)\n\n' + playersName
         } else {
             botResponse = '<u>Гравці відсутні</u>'
         }
