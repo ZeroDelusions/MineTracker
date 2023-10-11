@@ -46,8 +46,8 @@ bot.command('players', async (msg) => {
         if (playersList.length > 0) {
             const playersIcons = JSON.parse(process.env.PLAYERS_ICONS || '{}');
             let playersName = playersList.map(player => {
-                const icon = playersIcons[player.name_clean] ? `• ${playersIcons[player.name_clean]} ` : '';
-                return `${icon}${player.name_clean}`;
+                const icon = playersIcons[player.name_clean] ? `${playersIcons[player.name_clean]} ` : '';
+                return `• ${icon}<b>${player.name_clean}</b>`;
             }).join('\n');
 
             let playerCount = playersList.length;
@@ -55,7 +55,7 @@ bot.command('players', async (msg) => {
         } else {
             msg.reply('<u>Гравці відсутні</u>', { parse_mode: "HTML" });
         }
-        
+
     } catch (error) {
         console.error(error);
     }
